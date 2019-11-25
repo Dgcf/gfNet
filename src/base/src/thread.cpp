@@ -21,6 +21,10 @@ threadID(0),
 func_(func),
 data_(args)
 {
+}
+
+void thread::start()
+{
     pthread_create(&threadID, NULL, &thread::ThreadCallBack, this);
 }
 

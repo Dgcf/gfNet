@@ -1,3 +1,6 @@
+#ifndef GFNET_COMMON_H
+#define GFNET_COMMON_H
+
 #include <vector>
 #include <list>
 #include <deque>
@@ -22,6 +25,10 @@ using namespace std;
 namespace gNet
 {
 
+#define GF_CHECK(x) { decltype(x) t = x;            \
+                    assert(t == 0);                                             \
+                 }
+
 enum Priority
 {
     Unknown,
@@ -45,3 +52,5 @@ struct MsgType
 
 
 }
+
+#endif

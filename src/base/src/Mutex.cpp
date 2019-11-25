@@ -1,5 +1,8 @@
 #include "../inc/Mutex.h"
 
+namespace gNet
+{
+
 MutexLock::MutexLock()
 {
     GF_CHECK(pthread_mutex_init(&mutex_, NULL))
@@ -27,8 +30,10 @@ MutexLockGuard::MutexLockGuard()
 
 MutexLockGuard::~MutexLockGuard()
 {
-    if (!release)
+    if (!release_)
     {
         lock_.UnLock();
     }
+}
+
 }

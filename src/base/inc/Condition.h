@@ -1,3 +1,6 @@
+#ifndef GFNET_CONDITION_H
+#define GFNET_CONDITION_H
+
 #include "Mutex.h"
 
 namespace gNet
@@ -28,3 +31,5 @@ private:
 };
 
 }
+
+#endif

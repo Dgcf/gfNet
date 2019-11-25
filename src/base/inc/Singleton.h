@@ -1,3 +1,6 @@
+#ifndef GFNET_SINGLETON_H
+#define GFNET_SINGLETON_H
+
 #include "Mutex.h"
 
 template<typename _Ty>
@@ -16,4 +19,4 @@ public:
     }
 };
 
-
+#endif

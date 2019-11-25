@@ -1,12 +1,14 @@
+#ifndef GFNET_MUTEX_H
+#define GFNET_MUTEX_H
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "../../common.h"
 
-#define GF_CHECK(x) { decltype(x) t = x;            \
-                    assert(t == 0);                                             \
-                 }
+namespace gNet
+{
 
 /*********************************************************
  * 封装pthread_mutex_t
@@ -47,3 +49,6 @@ public:
     pthread_mutex_t* getMutex() { return lock_.getMutex(); }
 };
 
+}
+
+#endif

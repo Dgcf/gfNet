@@ -1,7 +1,8 @@
+#include <stdio.h>
 #include <chrono>
 #include <random>
 #include "../src/base/inc/blockqueue.h"
-#include "..//src/base/inc/ThreadPool.h"
+#include "../src/base/inc/ThreadPool.h"
 using namespace std;
 using namespace gNet;
 
@@ -42,7 +43,8 @@ void task_0()
 
 void Add_msg1()
 {
-    vector<string> vec_msg = {
+    vector<string> vec_msg = 
+    {
         "hello", "Zsh", "is", "big", "God", "She", "Very", "Stronge", "But", "Also", "Study", "Hard", "So", "what", "are", "you", "Waiting", "for"
     };
     int size = vec_msg.size();
@@ -76,7 +78,7 @@ void Add_msg2()
         int index = di(dre);
         printf("chinese index is: %d\n", index);
         msgtype.msg_ = vec_msg.at(index);
-        msgtpe.priority_ = Mid;
+        msgtype.priority_ = Mid;
         msg.add(msgtype);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }

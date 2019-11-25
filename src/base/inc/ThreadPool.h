@@ -1,3 +1,6 @@
+#ifndef GFNET_THREADPOOL_H
+#define GFNET_THREADPOOL_H
+
 #include <future>
 #include <functional>
 #include <vector>
@@ -15,17 +18,6 @@ namespace gNet
 
 typedef void (*callback_)(void* );
 typedef std::function<void(void*)> Task;
-
-// struct TaskInfo
-// {
-//     Priority priority_;
-//     Task task_;
-//     bool operator<(TaskInfo& info)
-//     {
-//         return static_cast<int>(priority_)<static_cast<int>(info.priority_);
-//     }
-// };
-
 
 class ThreadPool
 {
@@ -49,7 +41,7 @@ private:
     func_type func_;
     void* data_;
     // 因为thread不能拷贝，所以采用指针保存
-    vector<unique_ptr<thread> > threads_;
+    vector<unique_ptr<gNet::thread> > threads_;
 
     // 任务llist
     list<MsgType<Task>> tasks_;
@@ -58,3 +50,5 @@ private:
 };
 
 }
+
+#endif

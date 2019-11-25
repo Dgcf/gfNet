@@ -1,3 +1,6 @@
+#ifndef GFNET_THREAD_H
+#define GFNET_THREAD_H
+
 #include <pthread.h>
 #include  "../../common.h"
 
@@ -14,6 +17,7 @@ public:
 
 public:
     thread(func_type func, void* args);
+    void start();
     void detach();
     void join();
     void CallBack();
@@ -28,3 +32,5 @@ private:
 };
 
 }
+
+#endif

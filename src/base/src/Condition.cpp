@@ -1,5 +1,8 @@
 #include "../inc/Condition.h"
 
+namespace gNet
+{
+
 Condition::Condition()
 {
     GF_CHECK(pthread_cond_init(&cond_, NULL))
@@ -36,4 +39,6 @@ void Condition::Notify_One()
 void Condition::Notify_All()
 {
     GF_CHECK(pthread_cond_broadcast(&cond_))
+}
+
 }

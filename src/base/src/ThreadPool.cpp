@@ -16,8 +16,10 @@ void ThreadPool::start()
 {
     for (size_t i = 0; i < num_; i++)
     {
-        unique_ptr<thread> t(new thread(std::bind(&ThreadPool::RunInThread, this), data_));
-        threads_.push_back(t);
+        // 两种方法：
+        // unique_ptr<gNet::thread> t(new gNet::thread(std::bind(&ThreadPool::RunInThread, this), data_));
+        // threads_.push_back(std::move(t));
+        threads_.emplace_back(new gNet::thread(std::bind(&ThreadPool::RunInThread, this), data_));
     }
 }
 
