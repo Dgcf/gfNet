@@ -1,20 +1,46 @@
-ThreadPoolDemo: ThreadModuleTest.o Condition.o Mutex.o thread.o ThreadPool.o
-	g++ -pthread -o ThreadPoolDemo  ThreadModuleTest.o Condition.o Mutex.o thread.o ThreadPool.o 
+objs=ThreadModuleTest.o Condition.o Mutex.o thread.o ThreadPool.o
+#VPATH=../src/base/inc:../src/base/src:../src
+vpath %.h ../src/base/inc
+vpath %.h ../src
+vpath %.cpp ../src/base/src
 
-ThreadModuleTest.o: ../src/base/inc/blockqueue.h ../src/base/inc/ThreadPool.h
-	g++ -c ThreadModuleTest.cpp
+$(var:a=b)
+${var:a=b}
 
-Condition.o: ../src/base/inc/Condition.h ../src/base/inc/Mutex.h
-	g++ -c ../src/base/src/Condition.cpp
+.PHONY:all
+all: ThreadPoolDemo: $(objs)
+	g++ -pthread -Wall -g -o ThreadPoolDemo  $(objs)
 
-Mutex.o: ../src/base/inc/Mutex.h ../src/common.h
-	g++ -c ../src/base/src/Mutex.cpp
+ThreadModuleTest.o: blockqueue.h ThreadPool.h
+	g++ -g -c ThreadModuleTest.cpp
 
-thread.o: ../src/base/inc/thread.h ../src/common.h
-	g++ -c ../src/base/src/thread.cpp
+Condition.o: Condition.h Mutex.h
+	g++ -g -c ../src/base/src/Condition.cpp		# vpath在这里不管用
 
-ThreadPool.o: ../src/base/inc/ThreadPool.h ../src/base/inc/thread.h ../src/base/inc/Condition.h ../src/common.h
-	g++ -c ../src/base/src/ThreadPool.cpp
+Mutex.o: Mutex.h common.h
+	g++ -g -c ../src/base/src/Mutex.cpp
 
-clear:
-	rm -rf *.o
+thread.o: thread.h common.h
+	g++ -g -c ../src/base/src/thread.cpp
+
+ThreadPool.o: ThreadPool.h thread.h Condition.h common.h
+	g++ -g -c ../src/base/src/ThreadPool.cpp
+
+.PHONY: clean
+clean:
+	@-rm -f *.o ThreadPoolDemo
+
+.PHONY: install
+install:
+
+.PHONY: print
+print: 
+
+.PHONY: tar
+tar:
+
+.PHONY: dist
+dist: 
+
+.PHONY: test
+test: 
