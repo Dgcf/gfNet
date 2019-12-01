@@ -12,7 +12,7 @@ void thread::CallBack()
 {
     if (func_)
     {
-        func_(data_);
+        func_();
     }
 }
 

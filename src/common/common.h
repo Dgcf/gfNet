@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <string>
 #include <chrono>
+#include <fstream>
 
 using namespace std;
 
@@ -24,6 +25,9 @@ using namespace std;
 
 namespace gNet
 {
+
+const int g_smallsize = 1024;
+const int g_bigsize = 1024*1000;
 
 #define GF_CHECK(x) { decltype(x) t = x;            \
                     assert(t == 0);                                             \

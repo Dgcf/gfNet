@@ -30,7 +30,7 @@ public:
     _Ty get();
 
 private:
-
+    MutexLock  lock_;
 };
 
 template<typename _Ty>
@@ -46,7 +46,8 @@ MsgQueue<_Ty>::~MsgQueue()
 template<typename _Ty>
 void MsgQueue<_Ty>::add(MsgType<_Ty>& msg)
 {
-    MutexLockGuard lc;
+    //MutexLockGuard lc;                // 如果用这个，会出现崩溃，从打印看没有锁住资源
+    lock_.Lock();
     queue_.push_back(msg);
     printf("queue_.size(): %d\n", queue_.size());
     
@@ -54,13 +55,15 @@ void MsgQueue<_Ty>::add(MsgType<_Ty>& msg)
     // 1。语法问题；2。gdb调试问题，两个问题都是无法打印queue_内容
     queue_.sort(); 
     
-//#ifdef DEBUG
-    // for (list<MsgType<_Ty> >::iterator it = queue_.begin(); it != queue_.end(); ++it)
-    // {
-    //     printf("priority: %d, msg is %s\n", it->priority_,it->msg_.c_str());
-    // }
-//#endif
+    #ifdef DEBUG
+    for (typename list<MsgType<_Ty> >::iterator it = queue_.begin(); it != queue_.end(); ++it)
+    {
+        printf("priority: %d, msg is %s\n", it->priority_,it->msg_.c_str());
+    }
+    #endif
+
     //cond_.Notify_One();
+    lock_.UnLock();
 }
 
 template<typename _Ty>
