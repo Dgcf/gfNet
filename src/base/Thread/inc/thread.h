@@ -41,14 +41,8 @@ private:
 namespace CurrentThread
 {
 
-const char* threadID()
-{
-    char strpid[32];
-    memset(strpid, 0, sizeof(strpid));
-    pid_t pid = syscall(SYS_gettid);
-    sprintf(strpid, "%5d", (int)pid);
-    return strpid;
-}
+// 在这里定义会报错，必须在此声明，在cpp文件中定义
+string ICurrentthreadID();
 
 }
 

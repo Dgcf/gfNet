@@ -49,7 +49,7 @@ void MsgQueue<_Ty>::add(MsgType<_Ty>& msg)
     //MutexLockGuard lc;                // 如果用这个，会出现崩溃，从打印看没有锁住资源
     lock_.Lock();
     queue_.push_back(msg);
-    printf("queue_.size(): %d\n", queue_.size());
+    printf("queue_.size(): %ld\n", queue_.size());
     
     // 排序还有问题：
     // 1。语法问题；2。gdb调试问题，两个问题都是无法打印queue_内容

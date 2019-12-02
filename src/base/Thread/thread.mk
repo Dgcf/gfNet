@@ -1,9 +1,7 @@
-CXX=g++
-CXXFLAGS=-g -pthread
-INCLUDE:=$(wildcard ./inc/*.h)
-INCLUDE+= ../../common/common.h
-SOURCE:=$(wildcard ./src/*.cpp)
-
+# CXXFLAGS=-g -pthread
+# INCLUDE:=$(wildcard ./inc/*.h)
+# INCLUDE+= ../../common/common.h
+SOURCE:=$(wildcard ./src/*.cpp)						# 这一行注释了都能编译成功，是什么原因？
 OBJECTS:=$(patsubst %.cpp, %.o, $(SOURCE))
 
 _all: $(OBJECTS)
@@ -11,4 +9,4 @@ _all: $(OBJECTS)
 
 .PHONY: _clean
 _clean:
-	@-rm -f ./src/*.o
+	@-$(RM) ./src/*.o

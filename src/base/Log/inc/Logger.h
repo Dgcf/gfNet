@@ -52,10 +52,14 @@ private:
 /************************************************************
  * Log格式：2019-01-01 00:00:00 PID TID level FIle xxxx
  * **********************************************************/
-#define LOG_INFO                gNet::Logger(__FILE__, __LINE__, LOGLEVEL::info)
-#define LOG_DEBUG           gNet::Logger(__FILE__, __LINE__, LOGLEVEL::debug)
-#define LOG_WARNING     gNet::Logger(__FILE__, __LINE__, LOGLEVEL::warning)
-#define LOG_ERROR           gNet::Logger(__FILE__, __LINE__, LOGLEVEL::error)
-#define LOG_FATAL             gNet::Logger(__FILE__, __LINE__, LOGLEVEL::fatal)
+#define LOG_INFO                gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::info)
+#define LOG_DEBUG           gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::debug)
+#define LOG_WARNING     gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::warning)
+#define LOG_ERROR           gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::error)
+#define LOG_FATAL             gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::fatal)
+
+const char* s_test = "test_file";
+unsigned int i_test = 10;
+#define LOG_TEST               gNet::Logger(s_test, i_test, gNet::LOGLEVEL::info)                                      // for test
 
 #endif

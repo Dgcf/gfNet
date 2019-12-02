@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <string>
 #include <chrono>
+#include <random>
 #include <fstream>
 
 using namespace std;
@@ -51,6 +52,20 @@ struct MsgType
     bool operator<(MsgType<_type>& _t)
     {
         return (int)priority_< (int)_t.priority_;
+    }
+};
+
+template<unsigned int start, unsigned int end>
+struct RandomValue
+{
+    std::default_random_engine dre1;
+    std::uniform_int_distribution<unsigned int> d;
+
+    RandomValue():d(start, end) { }
+
+    unsigned int operator()()
+    {
+        return d(dre1);
     }
 };
 

@@ -50,7 +50,7 @@ void Logger::SwitchLogLevel(LOGLEVEL level)
 
 void Logger::LogInfo(const char* msg)
 {
-    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::now(), CurrentThread::threadID(), szLevel_, szFile_, msg);
+    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::now(), CurrentThread::ICurrentthreadID(), szLevel_, szFile_, msg);
 }
 
 Logger& Logger::operator<<(const char* msg)
@@ -60,6 +60,7 @@ Logger& Logger::operator<<(const char* msg)
         LogInfo(msg);
         buffer_.Append(logmsg_, sizeof(logmsg_));
     }
+    return *this;
 }
 
 } // namespace gNet

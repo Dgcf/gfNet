@@ -22,6 +22,7 @@ public:
     char* Data() { return data_; }
     unsigned int dataSize() { static_cast<unsigned int>(cur_-data_); }
     unsigned int avail() { data_+sizeof(data_) - cur_;}
+    void reset() { cur_ = data_; }
 
 private:
     char data_[size];       // 总空间大小
