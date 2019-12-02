@@ -1,6 +1,6 @@
-#include "../../src/common/common.h"
 #include <stdio.h>
-#include "../../src/base/Log/inc/Logger.h"
+//#include "../../src/base/Log/inc/Logger.h"
+#include "/home/gongfeng/study/code/C++/gfNet/src/base/Log/inc/Logger.h"
 #include "../../src/base/Thread/inc/ThreadPool.h"
 using namespace gNet;
 

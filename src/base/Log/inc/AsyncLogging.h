@@ -2,9 +2,9 @@
 #define GFNET_LOGO_ASYNCLOGGING_H
 
 #include "../../../common/common.h"
-#include "./FixedBuffer.h"
 #include "../../Thread/inc/Mutex.h"
 #include "../../Thread/inc/thread.h"
+#include "./FixedBuffer.h"
 #include "./LogFile.h"
 
 namespace gNet

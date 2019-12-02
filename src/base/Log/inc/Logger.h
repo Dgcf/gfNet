@@ -4,7 +4,7 @@
 #include "../../../common/common.h"
 #include "../inc/FixedBuffer.h"
 #include "../inc/AsyncLogging.h"
-#include "../../time/inc/Timestamp.h"
+#include "../../Time/inc/Timestamp.h"
 
 namespace gNet
 {
@@ -58,8 +58,8 @@ private:
 #define LOG_ERROR           gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::error)
 #define LOG_FATAL             gNet::Logger(__FILE__, __LINE__, gNet::LOGLEVEL::fatal)
 
-const char* s_test = "test_file";
-unsigned int i_test = 10;
+static const char* s_test = "test_file";
+static const unsigned int i_test = 10;
 #define LOG_TEST               gNet::Logger(s_test, i_test, gNet::LOGLEVEL::info)                                      // for test
 
 #endif

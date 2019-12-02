@@ -4,6 +4,7 @@ namespace gNet
 {
     
 AsyncLogging Logger::asyncLog_ ;
+LOGLEVEL Logger::curlevel_;
 
 Logger::Logger(const char* sfile, unsigned int sline, LOGLEVEL slevel):
 level_(slevel)
@@ -50,7 +51,7 @@ void Logger::SwitchLogLevel(LOGLEVEL level)
 
 void Logger::LogInfo(const char* msg)
 {
-    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::now(), CurrentThread::ICurrentthreadID(), szLevel_, szFile_, msg);
+    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::now(), CurrentThread::ICurrentthreadID().c_str(), szLevel_, szFile_, msg);
 }
 
 Logger& Logger::operator<<(const char* msg)
