@@ -41,7 +41,6 @@ void thread::join()
 namespace CurrentThread
 {
 
-// 在这里定义会报错，必须在此声明，在cpp文件中定义
 string ICurrentthreadID()
 {
     return "";

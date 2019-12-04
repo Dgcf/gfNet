@@ -51,7 +51,8 @@ void Logger::SwitchLogLevel(LOGLEVEL level)
 
 void Logger::LogInfo(const char* msg)
 {
-    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::now(), CurrentThread::ICurrentthreadID().c_str(), szLevel_, szFile_, msg);
+    //                            time/PID/level/file/msg
+    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::file_time(), CurrentThread::ICurrentthreadID().c_str(), szLevel_, szFile_, msg);
 }
 
 Logger& Logger::operator<<(const char* msg)

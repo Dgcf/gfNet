@@ -3,6 +3,7 @@
 
 #include "../../../common/common.h"
 #include "../../Thread/inc/Mutex.h"
+#include "../../Thread/inc/Condition.h"
 #include "../../Thread/inc/thread.h"
 #include "./FixedBuffer.h"
 #include "./LogFile.h"
@@ -26,6 +27,7 @@ private:
 
 private:
     MutexLock lock_;
+    Condition cond_;
     thread thread_;
     std::unique_ptr<FixedBuffer<g_bigsize>> currentBuffer_;
     std::unique_ptr<FixedBuffer<g_bigsize>> nextBuffer_;

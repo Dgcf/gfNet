@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "iosfwd": "cpp",
+        "condition_variable": "cpp",
+        "future": "cpp",
+        "__mutex_base": "cpp"
+    }
+}

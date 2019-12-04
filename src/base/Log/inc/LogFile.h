@@ -2,6 +2,7 @@
 #define GFNET_LOGFILE_H
 
 #include "../../../common/common.h"
+#include "../../Time/inc/Timestamp.h"
 
 namespace gNet
 {
@@ -16,15 +17,22 @@ public:
     NO_COPY(LogFile)
 
 public:
-    LogFile();
+    LogFile(unsigned int size, string sfile="log1");
     ~LogFile();
 
     void open();
     void write(const char* msg, unsigned int size);
+
+private:
+    void getfilename();
     
 private:
-    char logFile_[64];
-    fstream fstrm;
+    unsigned int            index_;
+    unsigned int            fileSize_;
+    unsigned int            unused_;
+    string                          logFile_;
+    fstream                      fstrm_;
+    Timestamp              timestamp_;
 };
 
 } // namespace gNet
