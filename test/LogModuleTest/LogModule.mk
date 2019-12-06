@@ -14,7 +14,9 @@ TIMESUBMK=time.mk
 
 SUBMK = $(join $(LOGSUBDIR), $(LOGSUBMK)) $(join $(THREADSUBDIR), $(THREADSUBMK)) $(join $(TIMESUBDIR), $(TIMESUBMK))
 
-CXXFLAGS := -g -pthread -DDEBUG 				 # -Wall
+SANITIZER = -fsanitize=address -O1 -fno-omit-frame-pointer -fno-optimize-sibling-calls
+CXXFLAGS := -g -pthread 				 # -Wall  -DDEBUG
+#CXXFLAGS += $(SANITIZER)
 
 LOGCPP := $(wildcard $(join $(LOGSUBDIR), src/*.cpp))
 LOGOBJ := $(patsubst %.cpp, %.o, $(LOGCPP))

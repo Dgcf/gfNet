@@ -19,7 +19,7 @@ public:
 
     AsyncLogging();
 public:
-    void Append(const char* msg);
+    void Append(const char* msg, unsigned int len);
     void Start();
 
 private:

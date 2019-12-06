@@ -14,7 +14,6 @@
 #include <string>
 #include <chrono>
 #include <random>
-#include <fstream>
 
 using namespace std;
 
@@ -27,8 +26,8 @@ using namespace std;
 namespace gNet
 {
 
-static const int g_smallsize = 1024;
-static const int g_bigsize = 1024*1000;
+static const int g_smallsize = 128;
+static const int g_bigsize = 128*2;
 
 #define GF_CHECK(x) { decltype(x) t = x;            \
                     assert(t == 0);                                             \
@@ -55,10 +54,11 @@ struct MsgType
     }
 };
 
+static std::default_random_engine dre1;
 template<unsigned int start, unsigned int end>
 struct RandomValue
 {
-    std::default_random_engine dre1;
+    
     std::uniform_int_distribution<unsigned int> d;
 
     RandomValue():d(start, end) { }

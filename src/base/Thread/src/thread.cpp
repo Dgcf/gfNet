@@ -43,7 +43,11 @@ namespace CurrentThread
 
 string ICurrentthreadID()
 {
-    return "";
+    char strpid[32];
+    memset(strpid, 0, sizeof(strpid));
+    pid_t pid = syscall(SYS_gettid);
+    sprintf(strpid, "%5d", (int)pid);
+    return strpid;
 }
 
 }

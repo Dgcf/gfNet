@@ -23,7 +23,8 @@ void MutexLock::UnLock()
     GF_CHECK(pthread_mutex_unlock(&mutex_))
 }
 
-MutexLockGuard::MutexLockGuard()
+MutexLockGuard::MutexLockGuard(MutexLock& lock):
+lock_(lock)
 {
     lock_.Lock();
 }

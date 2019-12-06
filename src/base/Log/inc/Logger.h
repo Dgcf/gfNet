@@ -39,10 +39,11 @@ public:
     static LOGLEVEL curlevel_;
 
 private:
+    static int count_;
     LOGLEVEL level_;
     char szLevel_[16];
     char szFile_[32];
-    char logmsg_[256];
+    char logmsg_[128];
     FixedBuffer<g_smallsize> buffer_;
 };
 

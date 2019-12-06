@@ -46,8 +46,7 @@ MsgQueue<_Ty>::~MsgQueue()
 template<typename _Ty>
 void MsgQueue<_Ty>::add(MsgType<_Ty>& msg)
 {
-    //MutexLockGuard lc;                // 如果用这个，会出现崩溃，从打印看没有锁住资源
-    lock_.Lock();
+    MutexLockGuard lc(lock_);                // 如果用这个，会出现崩溃，从打印看没有锁住资源
     queue_.push_back(msg);
     printf("queue_.size(): %ld\n", queue_.size());
     
@@ -63,13 +62,12 @@ void MsgQueue<_Ty>::add(MsgType<_Ty>& msg)
     #endif
 
     //cond_.Notify_One();
-    lock_.UnLock();
 }
 
 template<typename _Ty>
 _Ty MsgQueue<_Ty>::get()
 {
-    MutexLockGuard lc;
+    MutexLockGuard lc(lock_);
     if (queue_.empty())
     {
         cond_.wait(lc);

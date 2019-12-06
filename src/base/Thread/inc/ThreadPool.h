@@ -47,6 +47,7 @@ private:
     list<MsgType<Task>> tasks_;
     Condition cond_;
     bool quit_;
+    MutexLock mutex_;
 };
 
 }

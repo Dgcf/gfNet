@@ -35,11 +35,11 @@ public:
     NO_COPY(MutexLockGuard)
 
 private:
-    MutexLock lock_;
+    MutexLock& lock_;
     bool release_;
 
 public:
-    MutexLockGuard();
+    MutexLockGuard(MutexLock& lock);
     ~MutexLockGuard();
     void release() 
     { 

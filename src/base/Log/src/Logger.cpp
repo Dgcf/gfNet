@@ -4,7 +4,8 @@ namespace gNet
 {
     
 AsyncLogging Logger::asyncLog_ ;
-LOGLEVEL Logger::curlevel_;
+LOGLEVEL Logger::curlevel_ = info;
+int Logger::count_ = 0;
 
 Logger::Logger(const char* sfile, unsigned int sline, LOGLEVEL slevel):
 level_(slevel)
@@ -17,7 +18,8 @@ level_(slevel)
 
 Logger::~Logger()
 {
-    asyncLog_.Append(buffer_.Data());
+    // printf("count is: %d\n", ++count_);
+    asyncLog_.Append(buffer_.Data(), buffer_.DataSize());
 }
 
 void Logger::SetLogLevel(LOGLEVEL slevel)
@@ -30,19 +32,19 @@ void Logger::SwitchLogLevel(LOGLEVEL level)
     switch (level)
     {
     case info:
-        strncpy(szLevel_, "info", sizeof(szLevel_));
+        strncpy(szLevel_, "INFO", sizeof(szLevel_));
         break;
     case debug:
-        strncpy(szLevel_, "debug", sizeof(szLevel_));
+        strncpy(szLevel_, "DEBUG", sizeof(szLevel_));
         break;
     case warning:
-        strncpy(szLevel_, "warning", sizeof(szLevel_));
+        strncpy(szLevel_, "WARNING", sizeof(szLevel_));
         break;
     case error:
-        strncpy(szLevel_, "error", sizeof(szLevel_));
+        strncpy(szLevel_, "ERROR", sizeof(szLevel_));
         break;
     case fatal:
-        strncpy(szLevel_, "fatal", sizeof(szLevel_));
+        strncpy(szLevel_, "FATAL", sizeof(szLevel_));
         break;
     default:
         break;
@@ -52,7 +54,7 @@ void Logger::SwitchLogLevel(LOGLEVEL level)
 void Logger::LogInfo(const char* msg)
 {
     //                            time/PID/level/file/msg
-    sprintf(logmsg_, "%s %s %s %s: %s\n", Timestamp::file_time(), CurrentThread::ICurrentthreadID().c_str(), szLevel_, szFile_, msg);
+    sprintf(logmsg_, "%s %s %-7s %-18s: %s", Timestamp::file_time(), CurrentThread::ICurrentthreadID().c_str(), szLevel_, szFile_, msg);
 }
 
 Logger& Logger::operator<<(const char* msg)

@@ -20,13 +20,14 @@ void ThreadPool::start()
         // unique_ptr<gNet::thread> t(new gNet::thread(std::bind(&ThreadPool::RunInThread, this), data_));
         // threads_.push_back(std::move(t));
         threads_.emplace_back(new gNet::thread(std::bind(&ThreadPool::RunInThread, this), data_));
+        threads_[i]->start();
     }
 }
 
 void ThreadPool::AddTask(MsgType<Task>& task)
 {
     // 根据优先级先排序
-    MutexLockGuard lockguard;
+    MutexLockGuard lockguard(mutex_);
     tasks_.push_back(task);
     tasks_.sort();
     cond_.Notify_One();
@@ -34,7 +35,7 @@ void ThreadPool::AddTask(MsgType<Task>& task)
 
 Task ThreadPool::GetTask()
 {
-    MutexLockGuard lc;
+    MutexLockGuard lc(mutex_);
     MsgType<Task> task = tasks_.front();
     tasks_.pop_front();
     return task.msg_;
@@ -44,12 +45,15 @@ void* ThreadPool::RunInThread()
 {
     while (!quit_)
     {
-        MutexLockGuard lc;
-        if(tasks_.empty())
         {
-            cond_.wait(lc);
+            MutexLockGuard lc(mutex_);
+            if(tasks_.empty())
+            {
+                cond_.wait(lc);
+            }
         }
-        GetTask();
+        Task task = GetTask();
+        task(nullptr);
     }
 }
 

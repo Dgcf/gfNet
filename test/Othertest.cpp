@@ -8,6 +8,7 @@
 #include <functional>
 #include <typeinfo>
 #include <vector>
+#include <fstream>
 #include <cxxabi.h>
 #include <execinfo.h>
 #include <stdlib.h>
@@ -148,26 +149,8 @@ void test0()
 
 int main()
 {
-    // B b;
-    // unsigned int x = b();
-    // PIR<<"gogogo";
-
-
-    // char local_time_str[128];
-    // char *p = NULL;
-    // struct timeval tv;
- 
-    // gettimeofday(&tv, NULL);
-    // p = get_local_time(local_time_str, sizeof(local_time_str), &tv);
-    // printf("Get local time: \n%s\n", p);
-    // char s[12] = "hello";
-    // std::function<void*()> ty = std::bind(test1, s);
-    // ty();
-
-    // std::vector<int> v{1,2,3,4,5,6,7,8,9,0};
-    // cout<< "size is: " << v.size() << "     " << "cap: " << v.capacity() <<endl;
-    // std::vector<int> s{11,12,13,14};
-    // v.swap(s);
-    test0();
+    const char* s = "good";
+    ofstream of("./hello", ofstream::out|ofstream::app);
+    of<<s<<endl;
     return 0;
 }

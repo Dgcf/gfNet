@@ -2,6 +2,7 @@
 //#include "../../src/base/Log/inc/Logger.h"
 #include "/home/gongfeng/study/code/C++/gfNet/src/base/Log/inc/Logger.h"
 #include "../../src/base/Thread/inc/ThreadPool.h"
+#include <fstream>
 using namespace gNet;
 
  vector<const char*> vec_log
@@ -19,7 +20,7 @@ using namespace gNet;
     "11. Life is real, life is earnest.",
     "12. Life would be too smooth if it had no rubs in it.",
     "13. Life is the art of drawing sufficient conclusions form insufficient premises.",
-    "14. Life is fine and enjoyable, yet you must learn to enjoy your fine life."
+    "14. Life is fine and enjoyable, yet you must learn to enjoy your fine life.",
     "15. Life is but a hard and tortuous journey.",
     "16. Life is a horse, and either you ride it or it rides you.",
     "17. Life is a great big canvas, and you should throw all the paint on it you can.",
@@ -33,39 +34,62 @@ const char* logstr(const vector<const char*>& v)
     constexpr int size = 20;
     assert(size==v.size());
 
-    gNet::RandomValue<0, size> r;
+    gNet::RandomValue<0, size-1> r;
     unsigned int index = r();
     assert(index>=0 && index <20);
     return v[index];
 }
 
+
+/********************************************************************
+ * 在log输出之前，先输出到文件中，和后续log文件做对比，是否有遗漏
+ * ******************************************************************/
+ofstream fs("./OriginLog.log", ofstream::app);      // 原始日志记录文件
+std::mutex mx;
+void OriginPrint(const char* s)
+{
+    std::lock_guard<std::mutex> lc(mx);
+    fs << s << endl;
+}
+
 void test_info(void*)
 {
-    LOG_INFO << logstr(vec_log);
+    const char* s = logstr(vec_log);
+    OriginPrint(s);
+    LOG_INFO << s;
 }
 
 void test_debug(void*)
 {
-    LOG_DEBUG << logstr(vec_log);
+    const char* s = logstr(vec_log);
+    OriginPrint(s);
+    LOG_DEBUG << s;
 }
 
 void test_warning(void*)
 {
-    LOG_WARNING << logstr(vec_log);
+    const char* s = logstr(vec_log);
+    OriginPrint(s);
+    LOG_WARNING << s;
 }
 
 void test_error(void*)
 {
-    LOG_ERROR << logstr(vec_log);
+    const char* s = logstr(vec_log);
+    OriginPrint(s);
+    LOG_ERROR << s;
 }
 
 void test_fatal(void*)
 {
-    LOG_FATAL << logstr(vec_log);
+    const char* s = logstr(vec_log);
+    OriginPrint(s);
+    LOG_FATAL << s;
 }
 
 void test(bool runing)
 {
+    int runningCount = 0;
     ThreadPool pool(10, nullptr);
     pool.start();
 
@@ -87,14 +111,20 @@ void test(bool runing)
 
     while (runing)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        printf("Running Count: %d\n", ++runningCount);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
         unsigned int index = gNet::RandomValue<0,4>()();
         pool.AddTask(ts[index]);
     }
 }
 
+/****************************************************************************
+ * 调试目录：
+ * dir /home/gongfeng/study/code/C++/gfNet/src/base/Log/src:/home/gongfeng/study/code/C++/gfNet/src/base/Thread/src:/home/gongfeng/study/code/C++/gfNet/src/base/Time/src
+ * **************************************************************************/
 int main()
 {
     bool run = true;
     test(run);
+    fs.close();
 }

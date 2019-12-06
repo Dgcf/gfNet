@@ -1,6 +1,6 @@
 #ifndef GFNET_LOGFILE_H
 #define GFNET_LOGFILE_H
-
+#include <fstream>
 #include "../../../common/common.h"
 #include "../../Time/inc/Timestamp.h"
 
@@ -22,16 +22,17 @@ public:
 
     void open();
     void write(const char* msg, unsigned int size);
+    void flush() { fstrm_.flush(); }
 
 private:
-    void getfilename();
+    string getfilename();
     
 private:
     unsigned int            index_;
     unsigned int            fileSize_;
     unsigned int            unused_;
     string                          logFile_;
-    fstream                      fstrm_;
+    ofstream                    fstrm_;                     // 文件只在析构时被关闭
     Timestamp              timestamp_;
 };
 
