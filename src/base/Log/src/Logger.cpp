@@ -6,6 +6,7 @@ namespace gNet
 AsyncLogging Logger::asyncLog_ ;
 LOGLEVEL Logger::curlevel_ = info;
 int Logger::count_ = 0;
+std::atomic<bool> Logger::addFile_{true};
 
 Logger::Logger(const char* sfile, unsigned int sline, LOGLEVEL slevel):
 level_(slevel)
@@ -18,7 +19,12 @@ level_(slevel)
 
 Logger::~Logger()
 {
-    // printf("count is: %d\n", ++count_);
+    if (addFile_)       // 这个地方需要优化
+    {
+        addFile_.store(false);
+        asyncLog_.Start();
+    }
+    
     asyncLog_.Append(buffer_.Data(), buffer_.DataSize());
 }
 

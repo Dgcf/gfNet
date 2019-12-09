@@ -70,7 +70,7 @@ _Ty MsgQueue<_Ty>::get()
     MutexLockGuard lc(lock_);
     if (queue_.empty())
     {
-        cond_.wait(lc);
+        cond_.wait(lock_);
     }
     MsgType<_Ty> ty = queue_.front();
     queue_.pop_front();

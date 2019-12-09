@@ -39,6 +39,7 @@ public:
     static LOGLEVEL curlevel_;
 
 private:
+    static std::atomic<bool> addFile_;
     static int count_;
     LOGLEVEL level_;
     char szLevel_[16];

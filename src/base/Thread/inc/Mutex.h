@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
+
 #include  "../../../common/common.h"
 
 namespace gNet
@@ -26,7 +26,7 @@ public:
     ~MutexLock();
     void Lock();
     void UnLock();
-    pthread_mutex_t* getMutex() { return & mutex_; }
+    pthread_mutex_t* getMutex() { return &mutex_; }
 };
 
 class MutexLockGuard
@@ -36,17 +36,10 @@ public:
 
 private:
     MutexLock& lock_;
-    bool release_;
 
 public:
     MutexLockGuard(MutexLock& lock);
     ~MutexLockGuard();
-    void release() 
-    { 
-        lock_.UnLock(); 
-        release_ = true;
-    }
-    pthread_mutex_t* getMutex() { return lock_.getMutex(); }
 };
 
 }

@@ -25,17 +25,18 @@ data_(args)
 
 void thread::start()
 {
-    pthread_create(&threadID, NULL, &thread::ThreadCallBack, this);
+    GF_CHECK(pthread_create(&threadID, NULL, &thread::ThreadCallBack, this));
 }
 
 void thread::detach()
 {
-    pthread_detach(threadID);
+    GF_CHECK(pthread_detach(threadID));
 }
 
 void thread::join()
 {
-    pthread_join(threadID, NULL);
+    GF_CHECK(pthread_join(threadID, NULL));
+    
 }
 
 namespace CurrentThread

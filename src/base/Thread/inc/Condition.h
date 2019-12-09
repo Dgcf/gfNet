@@ -16,9 +16,9 @@ public:
     ~Condition();
 
     template<typename _Predicate>
-    void Wait(MutexLockGuard& lock, _Predicate __p);
+    void Wait(MutexLock& lock, _Predicate __p);
 
-    void wait(MutexLockGuard& lock);
+    void wait(MutexLock& lock);
     
     void Notify_One();
     void Notify_All();

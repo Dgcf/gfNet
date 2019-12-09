@@ -16,7 +16,7 @@ Condition::~Condition()
 // 设想为实现C++11中的condition_variable中的wait，配合gunique_lock使用，但是。。。
 // TODO
 template<typename _Predicate>
-void Condition::Wait(MutexLockGuard& lock, _Predicate __p)
+void Condition::Wait(MutexLock& lock, _Predicate __p)
 {
     if (!__p())
     {
@@ -26,7 +26,7 @@ void Condition::Wait(MutexLockGuard& lock, _Predicate __p)
     }
 }
 
-void Condition::wait(MutexLockGuard& lock)
+void Condition::wait(MutexLock& lock)
 {
     GF_CHECK(pthread_cond_wait(&cond_, lock.getMutex()));
 }

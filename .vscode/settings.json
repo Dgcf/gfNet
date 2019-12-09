@@ -69,6 +69,7 @@
         "__tuple": "cpp",
         "ios": "cpp",
         "locale": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "__functional_03": "cpp"
     }
 }

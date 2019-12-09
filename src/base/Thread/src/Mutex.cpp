@@ -31,10 +31,7 @@ lock_(lock)
 
 MutexLockGuard::~MutexLockGuard()
 {
-    if (!release_)
-    {
-        lock_.UnLock();
-    }
+    lock_.UnLock();
 }
 
 }

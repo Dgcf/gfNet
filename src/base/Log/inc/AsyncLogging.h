@@ -18,14 +18,17 @@ public:
     NO_COPY(AsyncLogging)
 
     AsyncLogging();
+    ~AsyncLogging();
 public:
     void Append(const char* msg, unsigned int len);
     void Start();
+    void Stop();
 
 private:
     void* ThreadFunc();
 
 private:
+    bool running_;
     MutexLock lock_;
     Condition cond_;
     thread thread_;

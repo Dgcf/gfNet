@@ -2,7 +2,10 @@
 //#include "../../src/base/Log/inc/Logger.h"
 #include "/home/gongfeng/study/code/C++/gfNet/src/base/Log/inc/Logger.h"
 #include "../../src/base/Thread/inc/ThreadPool.h"
+#include "../../src/base/Time/inc/Timer.h"
+#include "../../src/base/Thread/inc/thread.h"
 #include <fstream>
+#include <iostream>
 using namespace gNet;
 
  vector<const char*> vec_log
@@ -28,6 +31,8 @@ using namespace gNet;
     "19. Life is painting a picture, not doing a sum.",
     "20. The wealth of the mind is the only wealth."
 };
+//static bool run = true;
+static std::atomic<bool> run(true);
 
 const char* logstr(const vector<const char*>& v)
 {
@@ -87,7 +92,7 @@ void test_fatal(void*)
     LOG_FATAL << s;
 }
 
-void test(bool runing)
+void test()
 {
     int runningCount = 0;
     ThreadPool pool(10, nullptr);
@@ -109,22 +114,42 @@ void test(bool runing)
     ts[4].priority_ = Unknown;
     ts[4].msg_ = test_fatal;
 
-    while (runing)
+    while (run)
     {
         printf("Running Count: %d\n", ++runningCount);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
         unsigned int index = gNet::RandomValue<0,4>()();
         pool.AddTask(ts[index]);
     }
+    pool.stop();
 }
 
 /****************************************************************************
  * 调试目录：
- * dir /home/gongfeng/study/code/C++/gfNet/src/base/Log/src:/home/gongfeng/study/code/C++/gfNet/src/base/Thread/src:/home/gongfeng/study/code/C++/gfNet/src/base/Time/src
+ * dir /home/gongfeng/study/code/C++/gfNet/src/base/Log/src:
+ * /home/gongfeng/study/code/C++/gfNet/src/base/Thread/src:
+ * /home/gongfeng/study/code/C++/gfNet/src/base/Time/src
  * **************************************************************************/
+void t()
+{
+    const unsigned int Test_time = 10;      // 测试时间
+    Timer timer(Test_time, []
+    {
+        run = false;
+        std::cout << CurrentThread::ICurrentthreadID() << endl;
+    });
+
+    //std::this_thread::sleep_for(std::chrono::milliseconds(11000));
+
+    test();
+    fs.close();
+}
+
 int main()
 {
-    bool run = true;
-    test(run);
-    fs.close();
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::cout << CurrentThread::ICurrentthreadID() << endl;
+    t();
+    cout << "Leave main" << endl;
+    //std::this_thread::sleep_for(std::chrono::milliseconds(10000));
 }

@@ -28,7 +28,9 @@ public:
 
 public:
     ThreadPool(int nums, void *data);
+    ~ThreadPool();
     void start();
+    void stop();
     void AddTask(MsgType<Task>& task);
     Task GetTask();
 
@@ -36,10 +38,10 @@ private:
     void* RunInThread();
 
 private:
-    //thread thread_;
     int num_;
     func_type func_;
     void* data_;
+
     // 因为thread不能拷贝，所以采用指针保存
     vector<unique_ptr<gNet::thread> > threads_;
 

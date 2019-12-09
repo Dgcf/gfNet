@@ -33,7 +33,7 @@ DEPEND =  $(THREADO) $(LOGOBJ) $(TIMEOBJ) $(DEMOOBJ)
 .PYTHON: all
 all: $(TARGET)
 $(TARGET): $(DEPEND)
-	$(CXX) $(CXXFLAGS) -o $@ $(SOURCECPP)
+	$(CXX) $(CXXFLAGS) -o $@ $(SOURCECPP) -lrt
 
 # 很奇怪，去掉上面一行中的 $(TARGET) 会删掉 thread.cpp 文件
 
