@@ -195,15 +195,68 @@ T* CheckNotNull(SourceFile file, int line, const char *names, T* ptr)
 
 #define CHECK_NOTNULL(val) CheckNotNull(__FILE__, __LINE__, "'" #val "' Must be non NULL", &val);
 
+// char* 和char*&的区别
+struct point
+{
+  int x;
+  int y;
+};
+
+void change1(point* &p1)
+{
+  p1 = new point;
+  p1->x = 4;
+}
+
+void change2(point* p2)
+{
+  p2 = new point;
+  p2->x = 4;
+}
+
+void test11()
+{
+  point* p1 = new point;
+  p1->x = 10;
+  change1(p1);
+  cout << p1->x << endl;
+}
+
+void test12()
+{
+  point* p2 = new point;
+  p2->x = 10;
+  change2(p2);
+  cout << p2->x << endl;
+}
+
+// 引用作为左值
+int& test03(int *p)
+{
+  return *p;
+}
+
+// *(static_cast<char **>(static_cast<void*>(ptr_next_ptr())));
+
 int main()
 {
+  char* sx = new char[32];
+  strncpy(sx, "hello", sizeof(*sx));
+  char* a = *static_cast<char**>(static_cast<void*>(sx));
+  printf("sz: %p, a: %p\n", sx, a);
+  // cout << sx << "    " << a << "     " << *a << endl;
+  // int* x = new int(12);
+  // test03(x) = 14;
+  // cout << *x << endl;
+  // test11();
+  // test12();
     // const char* s = "good";
     // ofstream of("./hello", ofstream::out|ofstream::app);
     // of<<s<<endl;
-    int s = 11;
+    //int s = 11;
     // CHECK_NOTNULL(s)
 
-    SourceFile fiel("hello");
+    //SourceFile fiel("hello");
 
     return 0;
 }

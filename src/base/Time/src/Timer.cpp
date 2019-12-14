@@ -28,7 +28,7 @@ func_(func)
 
 Timer::~Timer()
 {
-    timer_delete(timerid_);
+    GF_CHECK(timer_delete(timerid_));
     timerid_ = 0;
 }
 

@@ -78,6 +78,19 @@ void ZeroMemory(_Ty& ty)
     memset(&ty, 0, sizeof(ty));
 }
 
+class noncopyable
+{
+#if __cplusplus >= 201103L
+protected:                  // 访问属性定为protected而不是public
+    noncopyable(const noncopyable&) = delete;
+    noncopyable& operator=(const noncopyable&) = delete;
+#else
+private:
+    noncopyable(const noncopyable&);
+    noncopyable& operator=(const noncopyable&);
+#endif
+};
+
 
 }
 

@@ -41,12 +41,6 @@ $(DEMOOBJ): $(DEMOCPP)
 
 .PYTHON: clean
 clean:
-# @echo $(SUBMK)
-# for var in a b c d;\
-# do\
-# 	echo $(var);\
-# 	#make -f $(var) _clean
-# done
 	@make -C $(LOGSUBDIR) -f $(LOGSUBMK) _clean
 	@make -C $(THREADSUBDIR) -f $(THREADSUBMK) _clean
 	@make -C $(TIMESUBDIR) -f $(TIMESUBMK) _clean
