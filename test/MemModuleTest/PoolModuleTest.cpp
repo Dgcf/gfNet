@@ -26,14 +26,28 @@ using namespace gNet;
     "20. The wealth of the mind is the only wealth."
 };
 
-static gNet::pool<default_user_allocator> p(128, 32);
+// static gNet::pool<default_user_allocator> p(128, 32);
 
 
-void Talloc()
+void alloc_once()
 {
-    char* s0 = static_cast<char*>(p.malloc());
-    strncpy(s0, vec_log[0], sizeof(*s0));
-    printf("address is: %p, content is %s\n", s0, s0);
+    gNet::pool<default_user_allocator> p(128, 32);
+    char* old = static_cast<char*>(p.malloc());         // 第一次分配
+    printf("old: %p\n", old);
+    char* temp = old;
+    for (int i = 0; i < 15; i++)
+    {
+        int x = RandomValue<0, 19>()();
+        const char* const s = vec_log[x];
+        cout << "***************" << s << endl;
+        temp = static_cast<char*>(p.malloc());
+        printf("address is %p, old: %p:\n", temp);
+        assert(old+(i+1)*128==temp);
+        
+        strncpy(temp, s, 128);
+        // printf("address is: %p, content is %s\n", temp, temp);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }
 
 /****************************************************************
@@ -41,10 +55,5 @@ void Talloc()
  * **************************************************************/
 int main()
 {
-    for (int i = 0; i < 150; i++)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        Talloc();
-    }
-    
+    alloc_once();
 }

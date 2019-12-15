@@ -81,7 +81,7 @@ void ZeroMemory(_Ty& ty)
 class noncopyable
 {
 #if __cplusplus >= 201103L
-protected:                  // 访问属性定为protected而不是public
+protected:                  // 访问属性定为protected而不是public,以便继承
     noncopyable(const noncopyable&) = delete;
     noncopyable& operator=(const noncopyable&) = delete;
 #else

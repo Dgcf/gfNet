@@ -65,6 +65,11 @@ public:
         next_ptr() = arg.begin();
         next_size() = arg.element_size();
     }
+
+    PODPtr<size_type> next() const
+    {
+        return PODPtr<size_type>(next_ptr(), next_size());
+    }
 };
 
 // 指针类型一律使用void*
@@ -76,7 +81,9 @@ public:
 
 protected:
     void* first;                // 也是void*, 总是指向第一个空的内存区域；核心
-    simple_segregated_storage(): first(nullptr) { }
+    simple_segregated_storage(): 
+    first(nullptr) 
+    { }
 
 protected:
     void*& nextof(void *const ptr)
@@ -108,22 +115,12 @@ public:
 
         for (char*  iter = old-partionsize; iter != begin; old=iter, iter-=partionsize)
         {
-            printf("old: %p\n", old);
+            //printf("old: %p\n", old);
             nextof(iter) = old;
         }
-        printf("old: %p\n", old);
+        // printf("old: %p\n", old);
         nextof(begin) = old;
-        
-        // 自己实现
-        // void* iter = first = begin;
-        // for (unsigned int i = 1; i < num; ++i)
-        // {
-        //     printf("address %d is : %p\n", i, (iter+partionsize*i));
-        //     nextof(iter+(partionsize*(i-1))) = iter + partionsize*i;        // 这里要改下
-        // }
-        // void *const ret = first;
-        // first = nextof(first);
-        // return ret;
+
         first = begin;
         return malloc();
     }
@@ -136,15 +133,24 @@ public:
     typedef UserAllocator user_allocator;
     typedef typename UserAllocator::size_type size_type;
 
-    pool(int size, int num): chunk_size(size), chunk_num(num), list(0, 0) { }
+    pool(int size, int num): 
+    chunk_size(size), 
+    chunk_num(num), 
+    list(0, 0),
+    malloc_num(0),
+    free_num(0)
+    { }
 
     ~pool() 
     {
-        if (ptr)
+        PODPtr<size_type> prev = list;
+        do
         {
-            delete ptr;
-            ptr = nullptr;
-        }
+            PODPtr<size_type> next = prev.next();
+           
+            delete[] prev.begin();
+            prev = next; 
+        } while (prev.valid());
     }
 
 protected:
@@ -156,13 +162,15 @@ protected:
         ptr = new char[alloc_size];
         if (ptr)
         {
-            cout << "new memory size is: " << alloc_size << endl;
+            printf("new memory: %p, size is: %d\n", ptr, alloc_size);
         }
         
         PODPtr<size_type> node(ptr, alloc_size);
+
         // 新增的node放到链表最前面
         node.next(list);
-        list = node;
+        list = node;                // 不断更新list方便下次申请的链接
+                                              // list每次是最新的
         return store()->add_block(node.begin(), node.element_size(), chunk_size);
     }
 
@@ -186,6 +194,8 @@ private:
     char* ptr;
     int chunk_size;
     int chunk_num;
+    int malloc_num;
+    int free_num;
 };
 
 }
