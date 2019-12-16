@@ -10,8 +10,6 @@ struct default_user_allocator
 {
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
-
-    
 };
 
 // 指针类型一律使用char*
@@ -26,12 +24,15 @@ private:
 
 public:
     PODPtr(char* p, _Ty n): ptr(p), sz(n)
-    {
-    }
+    {}
+
+    PODPtr(): ptr(nullptr), sz(0)
+    {}
 
     ~PODPtr(){}
 
 private:
+public:
     // 存放nextsize和nextptr的大小是多少？
     char* ptr_next_size() const { return ptr + sz - sizeof(size_type); }            // 这里是sizeof(size_type)而不是sizeof(char*)
 
@@ -58,18 +59,15 @@ public:
     size_type& next_size() const { return *(static_cast<size_type*>(static_cast<void*>(ptr_next_size()))); }
 
     // 返回指向下一个内存的指针(返回的是最后一个)
-    char*& next_ptr()  const { return *static_cast<char**>(static_cast<void*>(ptr_next_ptr())); }
+    char*& next_ptr()  const { return *(static_cast<char**>(static_cast<void*>(ptr_next_ptr()))); }
 
     void next(const PODPtr<size_type>& arg)
     {
         next_ptr() = arg.begin();
-        next_size() = arg.element_size();
+        next_size() = arg.total_size();
     }
 
-    PODPtr<size_type> next() const
-    {
-        return PODPtr<size_type>(next_ptr(), next_size());
-    }
+    PODPtr<size_type> next() const { return PODPtr<size_type>(next_ptr(), next_size()); }
 };
 
 // 指针类型一律使用void*
@@ -101,7 +99,7 @@ public:
         return ret; 
     }
 
-    void free(const char* chunk)
+    void free(char* const chunk)
     {
         nextof(chunk) = first;
         first = chunk;
@@ -110,15 +108,13 @@ public:
     void* add_block(void* begin, unsigned int len, unsigned int partionsize)
     {
         unsigned int num = len / partionsize;
-        char* old = static_cast<char*>(begin + (num - 1) * partionsize);
+        char* old = static_cast<char*>(begin) + (num - 1) * partionsize;
         nextof(old) = first;        // 尾端指向为空
 
         for (char*  iter = old-partionsize; iter != begin; old=iter, iter-=partionsize)
         {
-            //printf("old: %p\n", old);
             nextof(iter) = old;
         }
-        // printf("old: %p\n", old);
         nextof(begin) = old;
 
         first = begin;
@@ -136,18 +132,18 @@ public:
     pool(int size, int num): 
     chunk_size(size), 
     chunk_num(num), 
-    list(0, 0),
+    list_(0, 0),
     malloc_num(0),
-    free_num(0)
+    free_num(0),
+    x(0)
     { }
 
     ~pool() 
     {
-        PODPtr<size_type> prev = list;
+        PODPtr<size_type> prev = list_;
         do
         {
             PODPtr<size_type> next = prev.next();
-           
             delete[] prev.begin();
             prev = next; 
         } while (prev.valid());
@@ -162,19 +158,34 @@ protected:
         ptr = new char[alloc_size];
         if (ptr)
         {
-            printf("new memory: %p, size is: %d\n", ptr, alloc_size);
+            //printf("new memory: %p, size is: %d\n", ptr, alloc_size);
         }
-        
         PODPtr<size_type> node(ptr, alloc_size);
-
         // 新增的node放到链表最前面
-        node.next(list);
-        list = node;                // 不断更新list方便下次申请的链接
-                                              // list每次是最新的
-        return store()->add_block(node.begin(), node.element_size(), chunk_size);
+        node.next(list_);
+        list_ = node;                // 不断更新list方便下次申请的链接
+                                                 // list每次是最新的
+        if (++x == 3)
+        {
+            PODPtr<size_type> t = list_.next();
+            t = t.next();
+            printf("t: %p\n", t.begin());
+        }
+        return  store()->add_block(node.begin(), node.element_size(), chunk_size);
+    }
+
+    void check_list()
+    {
+        PODPtr<size_type> prev = list_;
+        while (prev.valid())
+        {
+            printf("--------------------list_.begin is %p\n", prev.begin());
+            prev = prev.next();
+        }
     }
 
 public:
+    int x;
     void* malloc()
     {
         if (store()->empty())
@@ -184,13 +195,14 @@ public:
         return store()->malloc();       // 这个对象不能调用protected成员
     }
 
-    void free(const char* chunk)
+    void free(char* const chunk)
     {
         store()->free(chunk);
     }
 
 private:
-    PODPtr<size_type> list;
+    //std::vector<PODPtr<size_type>> v_;
+    PODPtr<size_type> list_;
     char* ptr;
     int chunk_size;
     int chunk_num;

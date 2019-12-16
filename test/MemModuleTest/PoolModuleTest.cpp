@@ -28,26 +28,36 @@ using namespace gNet;
 
 // static gNet::pool<default_user_allocator> p(128, 32);
 
-
+/*****************************************************************************
+ * dir /home/gongfeng/study/code/C++/gfNet/src/base/Memory/inc
+ * ***************************************************************************/
 void alloc_once()
 {
     gNet::pool<default_user_allocator> p(128, 32);
     char* old = static_cast<char*>(p.malloc());         // 第一次分配
-    printf("old: %p\n", old);
+    //printf("old: %p\n", old);
     char* temp = old;
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 123; i++)
     {
         int x = RandomValue<0, 19>()();
-        const char* const s = vec_log[x];
-        cout << "***************" << s << endl;
+        const char* const s = vec_log[x];        
         temp = static_cast<char*>(p.malloc());
-        printf("address is %p, old: %p:\n", temp);
-        assert(old+(i+1)*128==temp);
+        printf("address is %p, old: %p:\n", temp, old);
+        strncpy(temp, s, 120);
         
-        strncpy(temp, s, 128);
-        // printf("address is: %p, content is %s\n", temp, temp);
+        //assert(old+(i+1)*128==temp);
+        //printf("address is: %p, content is %s\n", temp, temp);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        if(i==10||i==23||i==43||i==56)
+        {
+            p.free(temp);
+        }
     }
+}
+
+void alloc_and_free()
+{
+
 }
 
 /****************************************************************
