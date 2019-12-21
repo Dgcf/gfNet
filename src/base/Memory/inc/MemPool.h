@@ -165,15 +165,10 @@ protected:
         node.next(list_);
         list_ = node;                // 不断更新list方便下次申请的链接
                                                  // list每次是最新的
-        if (++x == 3)
-        {
-            PODPtr<size_type> t = list_.next();
-            t = t.next();
-            printf("t: %p\n", t.begin());
-        }
         return  store()->add_block(node.begin(), node.element_size(), chunk_size);
     }
 
+    // 测试使用
     void check_list()
     {
         PODPtr<size_type> prev = list_;
@@ -185,7 +180,6 @@ protected:
     }
 
 public:
-    int x;
     void* malloc()
     {
         if (store()->empty())
@@ -198,6 +192,22 @@ public:
     void free(char* const chunk)
     {
         store()->free(chunk);
+    }
+
+    //查找，返回PODPtr类型
+    PODPtr<size_type> find_POD(char* const chunk)
+    {
+        PODPtr<size_type> iter = list_;
+        while (iter.valid())
+        {
+            std::less<void*> le;
+            std::less_equal<void*> lq;
+            if (le(iter.begin(), chunk) && lq(chunk, iter.begin()+iter.element_size()))
+            {
+                return iter;
+            }
+            iter = iter.next();
+        }
     }
 
 private:

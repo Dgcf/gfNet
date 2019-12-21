@@ -80,7 +80,7 @@ void* ThreadPool::RunInThread()
     }
     
     #ifdef DEBUG
-    printf("*********************pthread join: %s************************\n", CurrentThread::ICurrentthreadID().c_str());
+    printf("**************pthread join: %s***************\n", CurrentThread::ICurrentthreadID().c_str());
     #endif
 }
 
