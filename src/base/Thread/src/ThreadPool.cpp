@@ -51,6 +51,9 @@ void ThreadPool::AddTask(MsgType<Task>& task)
 Task ThreadPool::GetTask()
 {
     MutexLockGuard lc(mutex_);
+
+    // 如果线程池中的线程都在运行，这时候addtask然后信号通知后是接收不到的，这时候任务队列中的任务就无法执行了
+    // 需要修改这个问题
     Task func;
     if (!tasks_.empty())
     {
