@@ -15,12 +15,12 @@ class Buffer
 {
 public:
     NO_COPY(Buffer)
-    Buffer() { }
+    Buffer();
 
-    int WriteableBytes() { buffer_.size() - writeIndex_; }
-    int ReadableBytes() { writeIndex_ - readIndex_; }
+    int WriteableBytes() { return buffer_.size() - writeIndex_; }
+    int ReadableBytes() { return writeIndex_ - readIndex_; }
     void MakeSpace(int _l);
-    void ReadFd();
+    const char* ReadFd(int _f);
     void WriteFd();
     char* begin() { return &*buffer_.begin(); }
     void Append(const char* _d, int _l);
@@ -32,6 +32,7 @@ private:
     int prependable_;
     int  readIndex_;
     int writeIndex_;
+    int initialsize_;
     std::vector<char> buffer_;
 };
 

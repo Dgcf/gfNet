@@ -41,8 +41,9 @@ void TcpConnection::Send(const char* _m, int _l)
 
 void TcpConnection::HandleRead()
 {
-    inputBuf_.ReadFd();         
-    messageCallback_(NULL);           // 这里回调出去的最好是裸数据，TODO
+    const char* buf = inputBuf_.ReadFd(socket_.Getfd());
+    printf("read bytes is: %d\n", inputBuf_.ReadableBytes());
+    messageCallback_(shared_from_this(), buf, inputBuf_.ReadableBytes()); 
     // 读多少数据，readindex_和writendex_需要更新 TODO
     inputBuf_.CompleteRead();
 }

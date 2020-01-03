@@ -27,14 +27,14 @@ void Acceptor::HandleRead()
     {
         if (NewConnection_)
         {
-            //NewConnection_();   
+            NewConnection_(clnt_fd);   
         }
     }
     else
     {
         // TODO
     }
-    
+
 }
 
 } // namespace Fnetgt

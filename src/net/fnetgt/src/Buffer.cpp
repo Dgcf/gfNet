@@ -6,6 +6,16 @@ namespace gNet
 namespace Fnetgt
 {
 
+Buffer::Buffer():
+prependable_(8),
+readIndex_(8),
+writeIndex_(8),
+initialsize_(1024),
+buffer_(prependable_+initialsize_)
+{
+
+}
+
 void Buffer::MakeSpace(int _l)
 {
     if (_l <= readIndex_ - prependable_ + WriteableBytes())
@@ -20,16 +30,18 @@ void Buffer::MakeSpace(int _l)
     }
 }
 
-void Buffer::ReadFd()
+const char* Buffer::ReadFd(int _f)
 {
+    printf("Enter in ReadFd\n");
     char extrabuffer[65536];
     const int writeable = WriteableBytes();
+    printf("writeable is %d\n", writeable);
     iovec vec[2];
     vec[0].iov_base = begin() + writeIndex_;
     vec[0].iov_len = writeable;
     vec[1].iov_base = extrabuffer;
     vec[1].iov_len = sizeof(extrabuffer);
-    const size_t n = readv(fd_, vec, 2);
+    const size_t n = readv(_f, vec, 2);
     if (n<0)
     {
         // error
@@ -44,6 +56,8 @@ void Buffer::ReadFd()
         std::copy(extrabuffer, extrabuffer+n-writeable, begin()+writeIndex_+writeable);
         writeIndex_ += n;
     }
+    printf("Leave in ReadFd\n");
+    return &*(begin()+readIndex_);
 }
 
 void Buffer::WriteFd()

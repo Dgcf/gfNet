@@ -21,14 +21,14 @@ class TcpServer
 {
 public:
     NO_COPY(TcpServer)
-    typedef std::unique_ptr<TcpConnection> Tpc;
+    typedef std::shared_ptr<TcpConnection> Tpc;                     // 这里为什么要用shared_ptr，能不能用unique_ptr？
     // typedef std::function<void(Buffer*)> _func;
     // typedef std::function<void()> Functor;
     TcpServer(const char* __ip, int __port);
     void Start();
     void SetNewCollectionCallback(NewConnnectionCallback _c);
     void SetMessageCallback(MessageCallback _m);
-    void HandleNewConnection(int _f, std::shared_ptr<EventLoop> _p);
+    void HandleNewConnection(int _f);
 
 private:
     NewConnnectionCallback newcon_;

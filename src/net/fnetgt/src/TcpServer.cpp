@@ -10,7 +10,7 @@ TcpServer::TcpServer(const char* __ip, int __port):
 loop_(new EventLoop),
 acceptor_(__ip, __port, loop_)
 {
-    acceptor_.SetNewConnection(std::bind(&TcpServer::HandleNewConnection, this, _1, _2));
+    acceptor_.SetNewConnection(std::bind(&TcpServer::HandleNewConnection, this, _1));
 }
 
 void TcpServer::Start()
@@ -28,10 +28,11 @@ void TcpServer::SetMessageCallback(MessageCallback _m)
     msgcallback_ = _m;
 }
 
-void TcpServer::HandleNewConnection(int _f, std::shared_ptr<EventLoop> _p)
+void TcpServer::HandleNewConnection(int _f)
 {
-    Tpc _c(new TcpConnection(_f, _p));
-    cons_.push_back(std::move(_c));
+    printf("Create new Connection\n");
+    Tpc _c(new TcpConnection(_f, loop_));
+    cons_.push_back(_c);
     // 注册回调告诉用户新的连接
     if (newcon_)
     {

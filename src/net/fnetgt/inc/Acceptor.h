@@ -20,7 +20,7 @@ class Acceptor
 {
 public:
     NO_COPY(Acceptor)
-    typedef std::function<void(int _f, std::shared_ptr<EventLoop>)> Functor;
+    typedef std::function<void(int _f)> Functor;
 
     Acceptor(const char* __ip, int __port, std::shared_ptr<EventLoop> __l);
     void SetNewConnection(Functor _func) { NewConnection_ = _func; }
