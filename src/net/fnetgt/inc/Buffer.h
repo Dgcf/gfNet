@@ -4,6 +4,7 @@
 #include "../../../common/common.h"
 #include <sys/socket.h>
 #include <sys/uio.h>
+#include "../../../base/Log/inc/Logger.h"
 
 namespace gNet
 {
@@ -20,7 +21,7 @@ public:
     int WriteableBytes() { return buffer_.size() - writeIndex_; }
     int ReadableBytes() { return writeIndex_ - readIndex_; }
     void MakeSpace(int _l);
-    const char* ReadFd(int _f);
+    unsigned int ReadFd(int _f);
     void WriteFd();
     char* begin() { return &*buffer_.begin(); }
     void Append(const char* _d, int _l);

@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include "../../../base/Log/inc/Logger.h"
 
 namespace gNet
 {

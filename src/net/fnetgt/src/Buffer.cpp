@@ -30,12 +30,11 @@ void Buffer::MakeSpace(int _l)
     }
 }
 
-const char* Buffer::ReadFd(int _f)
+unsigned int Buffer::ReadFd(int _f)
 {
-    printf("Enter in ReadFd\n");
     char extrabuffer[65536];
     const int writeable = WriteableBytes();
-    printf("writeable is %d\n", writeable);
+    // printf("writeable is %d\n", writeable);
     iovec vec[2];
     vec[0].iov_base = begin() + writeIndex_;
     vec[0].iov_len = writeable;
@@ -56,8 +55,7 @@ const char* Buffer::ReadFd(int _f)
         std::copy(extrabuffer, extrabuffer+n-writeable, begin()+writeIndex_+writeable);
         writeIndex_ += n;
     }
-    printf("Leave in ReadFd\n");
-    return &*(begin()+readIndex_);
+    return n;
 }
 
 void Buffer::WriteFd()

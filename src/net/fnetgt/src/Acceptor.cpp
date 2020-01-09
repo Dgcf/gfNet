@@ -6,7 +6,7 @@ namespace gNet
 namespace Fnetgt
 {
 
-Acceptor::Acceptor(const char* __ip, int __port, std::shared_ptr<EventLoop> __l):
+Acceptor::Acceptor(const char* __ip, int __port, EventLoop* __l):
 server_socket_(__ip, __port),
 channel_(new Channel(server_socket_.Getfd(), __l))
 {

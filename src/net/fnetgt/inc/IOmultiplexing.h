@@ -5,7 +5,8 @@
 // #include <sys/epoll.h>
 #include <memory>
 #include <vector>
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Channel.h"
+#include "./Channel.h"
+#include "../../../base/Log/inc/Logger.h"
 
 
 namespace gNet

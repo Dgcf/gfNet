@@ -6,7 +6,7 @@ namespace gNet
 namespace Fnetgt
 {
 
-Channel::Channel(int _f, std::shared_ptr<EventLoop> _l):
+Channel::Channel(int _f, EventLoop* _l):
 events_(0),
 curevents_(0),
 lp_(_l),
@@ -34,10 +34,16 @@ void Channel::HandleEvent()
    {
        errorCallback_();
    }
-   else if (curevents_ & EPOLLRDHUP && closeCallback_)  // 断开连接或半关闭的情况
+   else if (curevents_ & EPOLLHUP && closeCallback_)  // 断开连接       // 什么时候调到这里，EPOLLHUP事件并没有注册？
    {
+       printf("Close Callback\n");
        closeCallback_();
    }
+}
+
+void Channel::RemoveFromLoop()
+{
+    lp_->RemoveChannel(this);
 }
 
 } // namespace Fnetgt

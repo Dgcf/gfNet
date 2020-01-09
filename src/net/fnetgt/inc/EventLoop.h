@@ -2,10 +2,11 @@
 #define GFNET_FNETGT_EVENTLOOP_H_
 
 #include "../../../common/common.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Channel.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/IOmultiplexing.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Epoll.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/TcpConnection.h"
+#include "./Channel.h"
+#include "./IOmultiplexing.h"
+#include "./Epoll.h"
+#include "./TcpConnection.h"
+#include "../../../base/Log/inc/Logger.h"
 
 namespace gNet
 {
@@ -31,6 +32,7 @@ public:
     void Loop();
     void HandleEvent();
     void Update(uint32_t __e, uint32_t __t, void* _args);
+    void RemoveChannel(Channel* _r);
 
 private:
     bool IsLooping_;

@@ -3,7 +3,8 @@
 
 #include "../../../common/common.h"
 #include <sys/epoll.h>
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/EventLoop.h"
+#include "./EventLoop.h"
+#include "../../../base/Log/inc/Logger.h"
 
 namespace gNet
 {
@@ -11,13 +12,20 @@ namespace gNet
 namespace Fnetgt
 {
 
+enum ctl_state
+{
+    ctl_state_Add = 0,
+    ctl_state_Mod = 1,
+    ctl_state_Del = 2
+};
+
 class EventLoop;
 class Channel
 {
 public:
     //NO_COPY(Channel)
     typedef std::function<void()> Functor;
-    Channel(int _f, std::shared_ptr<EventLoop> _l);
+    Channel(int _f, EventLoop* _l);
 
     void EnableReading() { events_ |= EPOLLIN; Update();}
     void DisableReading() { events_ &= ~ EPOLLIN;  Update(); }
@@ -38,12 +46,17 @@ public:
     void ResetCurEvent(uint32_t __e) { curevents_ = __e; }
     void HandleEvent();
     int GetFd() const { return fd_; }
+    int GetEventsState() const { return events_; }
+    void SetIndex(ctl_state _d) { index_ = _d; }
+    ctl_state GetIndex() const { return index_; }
+    void RemoveFromLoop();
 
 private:
     int fd_;
+    ctl_state index_;
     uint32_t events_;                       // 设置下去的epoll事件
     uint32_t  curevents_;               // 当前监视的事件类型
-    std::shared_ptr<EventLoop> lp_;
+    EventLoop* lp_;
     Functor     readCallback_;
     Functor     writeCallback_;
     Functor     closeCallback_;

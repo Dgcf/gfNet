@@ -6,7 +6,7 @@ namespace gNet
 namespace Fnetgt
 {
 
-TcpConnection::TcpConnection(int _fd, std::shared_ptr<EventLoop> __p):
+TcpConnection::TcpConnection(int _fd, EventLoop* __p):
 chan_(new Channel(_fd, __p)),
 socket_(_fd)
 {
@@ -19,6 +19,7 @@ socket_(_fd)
 void TcpConnection::ConnectEstablished()
 {
     // 新的连接建立之后是读
+    chan_->SetIndex(ctl_state_Add);
     chan_->EnableReading();
 }
 
@@ -41,11 +42,22 @@ void TcpConnection::Send(const char* _m, int _l)
 
 void TcpConnection::HandleRead()
 {
-    const char* buf = inputBuf_.ReadFd(socket_.Getfd());
-    printf("read bytes is: %d\n", inputBuf_.ReadableBytes());
-    messageCallback_(shared_from_this(), buf, inputBuf_.ReadableBytes()); 
-    // 读多少数据，readindex_和writendex_需要更新 TODO
-    inputBuf_.CompleteRead();
+    // EPOLLRDHUP
+    const int len = inputBuf_.ReadFd(socket_.Getfd());
+    if (len > 0)
+    {
+        messageCallback_(shared_from_this(), inputBuf_.peek(), inputBuf_.ReadableBytes()); 
+        // 更新readndex_
+        inputBuf_.CompleteRead();
+    }
+    else if (len == 0)      // 读到0是否意味着关闭连接？TODO
+    {
+        HandleClose();
+    }
+    else if (len < 0)
+    {
+        HandleError();
+    }
 }
 
 void TcpConnection::HandleWrite()
@@ -54,8 +66,14 @@ void TcpConnection::HandleWrite()
     outputBuf_.CompleteRead();
 }
 
+// 断开连接后需要关闭epoll
+// 析构TcpConnection和Channel
 void TcpConnection::HandleClose()
 {
+    chan_->DisableAll();
+    closeCallback_(shared_from_this());
+    chan_->RemoveFromLoop();
+    // 最后关闭socket
     socket_.Close();
 }
 

@@ -40,4 +40,5 @@ int test0()
 int main()
 {
     test0();
+    std::unique_ptr<int> p;
 }

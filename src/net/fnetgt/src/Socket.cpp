@@ -14,7 +14,7 @@ port_(__port)
     addr_.sin_family = AF_INET;
     addr_.sin_addr.s_addr = htonl(INADDR_ANY);      // inet_addr(ip_.c_str());
     addr_.sin_port = htons(port_);
-    printf("Port is: %d\n",  port_);
+    // LOG_INFO<<"Port is: "<<port_;
     fd_ = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);   //这里失败怎么搞
     assert(fd_ != 0);
     printf("Create socket success, fd_ is %d\n", fd_);
@@ -29,13 +29,11 @@ fd_(_f)
 void Socket::Bind()
 {
     GF_CHECK(bind(fd_, (sockaddr*)&addr_, sizeof(addr_)))
-    printf("Bind success\n");
 }
 
 void Socket::Listen()
 {
     GF_CHECK(listen(fd_, 1024))
-    printf("Listen success\n");
 }
 
 int Socket::Accept()

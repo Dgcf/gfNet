@@ -21,6 +21,9 @@ typedef std::function<void()> NewConnnectionCallback;
 // 消息回调
 typedef std::function<void(const TcpConnectionPtr& _ptr, const char* _msg, int _len)> MessageCallback;
 
+// 关闭连接回调
+typedef std::function<void(const TcpConnectionPtr& _ptr)> CloseCallback;
+
 }
 
 

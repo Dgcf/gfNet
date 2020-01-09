@@ -2,10 +2,11 @@
 #define GFNET_FNETGET_TCPCONNECTION_H_
 
 #include "../../../common/common.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Socket.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Channel.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Buffer.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/fnetgt.h"
+#include "./Socket.h"
+#include "./Channel.h"
+#include "./Buffer.h"
+#include "./fnetgt.h"
+#include "../../../base/Log/inc/Logger.h"
 
 namespace gNet
 {
@@ -22,7 +23,7 @@ class TcpConnection: public std::enable_shared_from_this<TcpConnection>
 {
 public:
     NO_COPY(TcpConnection)
-    TcpConnection(int _fd, std::shared_ptr<EventLoop> __p);
+    TcpConnection(int _fd, EventLoop* __p);
     
     void ConnectEstablished();
     void ConnectDestroy();
@@ -35,12 +36,15 @@ public:
     void HandleError();
 
     void SetMessageCallback(MessageCallback __m) { messageCallback_ = __m; }
+    void SetCloseCallback(CloseCallback _f) { closeCallback_ = _f; } 
+
 private:
-    std::shared_ptr<EventLoop> _lp;
+    EventLoop* _lp;
     std::unique_ptr<Channel> chan_;
     Buffer inputBuf_;                                           // fnetgt写入数据，用户从中读数据
     Buffer outputBuf_;                                        // 用户写入数据，gnetgt从中发送数据
     MessageCallback   messageCallback_;
+    CloseCallback         closeCallback_;
     Socket  socket_;
 };
 

@@ -38,6 +38,18 @@ void EventLoop::Update(uint32_t __e, uint32_t __t, void* _args)
     io_->Update(__e, __t, _args);
 }
 
+void EventLoop::RemoveChannel(Channel* _r)
+{
+    for (ChannelIter iter = channels_.begin(); iter != channels_.end(); ++iter)
+    {
+        if (_r == *iter)
+        {
+            channels_.erase(iter);
+            return;
+        }
+    }
+}
+
 } // namespace Fnetgt
 
 } // namespace gNet

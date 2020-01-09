@@ -1,7 +1,7 @@
 #ifndef GFNET_FNETGT_EPOLL_H_
 #define GFNET_FNETGT_EPOLL_H_
 
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/IOmultiplexing.h"
+#include "./IOmultiplexing.h"
 
 namespace gNet
 {

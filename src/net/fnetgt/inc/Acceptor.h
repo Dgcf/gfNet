@@ -2,10 +2,11 @@
 #define GFNET_FNETGT_ACCEPTOR_H_
 
 #include "../../../common/common.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Socket.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/Channel.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/TcpConnection.h"
-#include "/home/gongfeng/study/code/C++/gfNet/src/net/fnetgt/inc/EventLoop.h"
+#include "./Socket.h"
+#include "./Channel.h"
+#include "./TcpConnection.h"
+#include "./EventLoop.h"
+#include "../../../base/Log/inc/Logger.h"
 
 namespace gNet
 {
@@ -22,7 +23,7 @@ public:
     NO_COPY(Acceptor)
     typedef std::function<void(int _f)> Functor;
 
-    Acceptor(const char* __ip, int __port, std::shared_ptr<EventLoop> __l);
+    Acceptor(const char* __ip, int __port, EventLoop* __l);
     void SetNewConnection(Functor _func) { NewConnection_ = _func; }
     void HandleRead();
     void HandleNewConnection(int _f, std::shared_ptr<EventLoop> _p);
