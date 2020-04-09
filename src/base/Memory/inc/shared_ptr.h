@@ -145,7 +145,7 @@ public:
             }
             if (base_)
             {
-                base_->release();    
+                base_->release();
             }
             base_ = __tmp;
          }

@@ -16,6 +16,7 @@
 #include <random>
 #include <assert.h>
 #include <string.h>
+#include <iostream>
 
 using namespace std;
 

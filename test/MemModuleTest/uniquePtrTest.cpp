@@ -1,5 +1,7 @@
 #include "../../src/base/Memory/inc/unique_ptr.h"
 #include <iostream>
+#include <list>
+#include <deque>
 using namespace std;
 using namespace gNet;
 
@@ -50,5 +52,7 @@ int main()
     // test0();
     // test1();
     // test2();
+    std::list<int> l;
+    
     test3();
 }
