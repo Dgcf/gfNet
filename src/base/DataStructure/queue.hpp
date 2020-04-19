@@ -1,4 +1,7 @@
 #include <deque>
+#include <vector>
+#include <functional>
+#include <algorithm>
 using namespace std;
 
 namespace gNet
@@ -73,7 +76,7 @@ private:
 /***********************************************
  * 优先级队列
  * *********************************************/
-template<typename _Tp, typename _Sequence>
+template<typename _Tp, typename _Sequence=vector<_Tp>, typename _Pr=std::less<typename _Sequence::value_type>>
 class priority_queue
 {
 public:
@@ -82,9 +85,49 @@ public:
     typedef typename _Sequence::reference reference;
     typedef typename _Sequence::const_reference const_reference;
     typedef _Sequence container_type;
+	typedef _Pr value_compare;
 
+public:
+	void push(const _Tp& __x)
+	{
+		c_.push_back(__x);
+		push_heap(c_.begin(), c_.end(), comp_);
+	}
 
+#if _cplusplus>=201103L
+	void push(value_type&& __val)
+	{
+		c.push_back(std::move(__val));
+		push_heap(c.begin(), c.end(), comp_);
+	}
+#endif
+
+	void pop()
+	{
+		pop_heap(c_.begin, c_.end, comp_);
+		c_.pop_bac();
+	}
+
+	reference top() const
+	{
+		return c_.front();
+	}
+
+	bool empty() const
+	{
+		return c_.empty();
+	}
+
+	size_type size() const
+	{
+		return c.size();
+	}
+
+private:
+	container_type c_;
+	value_compare comp_;
 };
 
 
 }
+
