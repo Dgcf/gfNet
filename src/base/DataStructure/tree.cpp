@@ -2,7 +2,7 @@
 #include <stack>
 using namespace std;
 
-namespace gnet
+namespace gNet
 {
 
 template<typename _Tp>
@@ -17,7 +17,6 @@ public:
 
 	_Tp elem_;
 	BSTNode<_Tp> *left_, *right_;
-
 };
 
 template<typename _Tp>
@@ -116,9 +115,38 @@ public:
 		BSTNode<_Tp> *p = root, *prev = nullptr;
 		while (p)
 		{
-			/* code */
+			prev = p;
+			if (__val < p->left_)
+			{
+				p = p->left_;
+			}
+			if (__val > p->right_)
+			{
+				p = p->right_;
+			}
 		}
-		
+		if (!root)
+		{
+			prev = new BSTNode<_Tp>(__val);
+		}
+		else if(__val < prev->elem_)
+		{
+			prev->left_ = new BSTNode<_Tp>(__val);
+		}
+		else
+		{
+			prev->right_ = new BSTNode<_Tp>(__val);
+		}
+	}
+
+	// 合并删除算法
+	void deleteByMerging(BSTNode<_Tp>* node)
+	{
+		BSTNode<_Tp> *tmp = node;
+		if(node != 0)
+		{
+			
+		}
 	}
 
 private:

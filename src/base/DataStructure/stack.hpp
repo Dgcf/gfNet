@@ -59,5 +59,54 @@ private:
     _Sequence c;
 };
 
+/******************************************************
+ * 栈的顺序存储结构
+ * ****************************************************/
+template<typename _Tp, int elemSize>
+struct SqStack
+{
+    _Tp data_[elemSize];
+    int top_;
+};
+
+template<typename _Tp, int elemSize>
+class stack_array
+{
+public:
+    void push(const _Tp& __Val)
+    {
+        assert(++sq_.top_<elemSize);
+        sq_.data_[sq_.top_] = elemSize;
+    }
+
+    _Tp pop()
+    {
+        _Tp tmp = sq_.data_[sq_.top_];
+        sq_.data_[sq_.top_] = 0;
+        --sq_.top_;
+        return tmp;
+    }
+
+private:
+    SqStack<_Tp, elemSize> sq_;
+};
+
+/**********************************************************
+ * 两栈共享，原理如下：
+ * 一个栈的栈底为数组的始端，另一个栈的栈底为数组的末端，
+ * 增加元素时两个栈向中间靠拢
+ * ********************************************************/
+template<typename _Tp, unsigned int elemSize>
+struct SqdoubleStack
+{
+    _Tp data_[elemSize];
+    unsigned int top1_;
+    unsigned int top2_;
+};
+
+template<typename _Tp, unsigned int elemSize>
+class 
+
+
 }
 

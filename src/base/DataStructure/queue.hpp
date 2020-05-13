@@ -2,6 +2,7 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
+#include <string.h>
 using namespace std;
 
 namespace gNet
@@ -105,7 +106,7 @@ public:
 	void pop()
 	{
 		pop_heap(c_.begin, c_.end, comp_);
-		c_.pop_bac();
+		c_.pop_back();
 	}
 
 	reference top() const
@@ -128,6 +129,43 @@ private:
 	value_compare comp_;
 };
 
+// 循环队列 数组实现
+template<typename _Tp, unsigned int elemSize>
+struct sqQueue
+{
+    sqQueue(): front_(nullptr), rear_(nullptr)
+    {
+        memset(data_, 0, sizeof(data_));
+    }
+
+    _Tp data_[elemSize];
+    unsigned int front_;
+    unsigned int rear_;
+};
+
+template<typename _Tp, unsigned int elemSize>
+class stack_loop
+{
+public:
+    stack_loop() {}
+    unsigned int size() const
+    {
+        return (queue_.rear_-queue_.front_+elemSize) % elemSize;
+    }
+
+    void push(const _Tp& __Val)
+    {
+        if(size() + 1 == elemSize)
+        {
+            return;
+        }
+        *queue_.rear_ = __Val;
+        
+    }
+
+private:
+    sqQueue<_Tp, elemSize> queue_;
+};
 
 }
 

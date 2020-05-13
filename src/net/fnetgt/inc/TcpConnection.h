@@ -42,7 +42,7 @@ private:
     EventLoop* _lp;
     std::unique_ptr<Channel> chan_;
     Buffer inputBuf_;                                           // fnetgt写入数据，用户从中读数据
-    Buffer outputBuf_;                                        // 用户写入数据，gnetgt从中发送数据
+    Buffer outputBuf_;                                        // 用户写入数据，gNetgt从中发送数据
     MessageCallback   messageCallback_;
     CloseCallback         closeCallback_;
     Socket  socket_;

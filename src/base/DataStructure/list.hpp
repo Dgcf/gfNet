@@ -23,10 +23,13 @@ class _List_iterator
     
 };
 
-template<typename _Ty>
+template<typename _Tp>
 class list
 {
+public:
+    typedef _Tp value_type;
 
+    typedef _list_node<_Tp> _Node;
 };
 
 } // namespace gNet

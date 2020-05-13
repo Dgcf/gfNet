@@ -78,4 +78,24 @@ private:
 };
 
 // 双向链表
+
+struct slist{
+    int val;
+    slist* next;
+};
+
+void deleteNode(int x)
+{
+    slist* li;
+    int count = 100;
+    slist* tmp = li;
+    int index = 0;
+    while (tmp && index <x)
+    {
+        tmp = tmp->next;
+        ++index;
+    }
+    
+        
+}
 }
